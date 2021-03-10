@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+</head>
+
+<script>
+    var size = 5;//矩阵大小
+    var block_list = new Array();
+
+    //加载随机方块
+    for (var i = 0; i < size; ++i)
+    {
+        block_list[i] = new Array();
+        for (var j = 0; j < size; ++j)
+        {
+            block_list[i][j] = Math.floor(Math.random()*3);
+            document.write(block_list[i][j] + '&emsp;');
+        }
+        document.write('<br />');
+    }
+
+    //随机需要破坏的方块
+    do
+    {
+        var x = Math.floor(Math.random()*size);
+        var y = Math.floor(Math.random()*size);
+    }while(block_list[x][y] == 0)
+
+    document.write('x = ' + x + ' y = ' + y);
+
+    //连锁破坏函数
+    block(x, y, block_list);
+
+    function block(x,y,block_list)
+    {
+        document.write('<br />');
+        var nblocks = new Array();
+        //need bolock 获得破坏的值
+        var nb = block_list[x][y];
+        document.write('需要破环的数字为：' + nb);
+        nblocks.push(x);
+        nblocks.push(y);
+
+        while(nblocks.length != 0)
+        {
+            console.log(nblocks)
+            x = nblocks[nblocks.length-2];
+            y = nblocks[nblocks.length-1];
+            //console.log('x' + x + 'y' + y)
+            nblocks.pop();
+            nblocks.pop();
+            block_list[x][y] = '9';
+
+            //右
+            if (x < (size - 1) && block_list[x + 1][y] == nb) 
+            {
+                block_list[x + 1][y] = '9';
+                nblocks.push(x + 1);
+                nblocks.push(y);
+            }
+
+            //左
+            if(x > 0 && block_list[x - 1][y] == nb) 
+            {
+                block_list[x - 1][y] = '9';
+                nblocks.push(x - 1);
+                nblocks.push(y);
+            }
+
+            //下
+            if (y < (size - 1) && block_list[x][y + 1] == nb) 
+            {
+                block_list[x][y + 1] = '9';
+                nblocks.push(x);
+                nblocks.push(y + 1);
+            }
+
+            //上
+            if(y > 0 && block_list[x][y - 1] == nb)
+            {
+                block_list[x][y - 1] = '9';
+                nblocks.push(x);
+                nblocks.push(y - 1);
+            }
+        }
+        //document.write('--------' + nblocks + '----------');
+    }
+    document.write('<br />');
+    //输出矩阵
+    for (var i = 0; i < size; ++i)
+    {
+        for (var j = 0; j < size; ++j)
+        {
+            document.write(block_list[i][j] + '&emsp;');
+        }
+        document.write('<br />');
+    }
+</script>
+</html>
